@@ -39,7 +39,12 @@ jobs:
     steps:
       - attach_workspace:
           at: .
-      - run: npm publish --access=public
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+      - run:
+          name: Publish package
+          command: npm publish
 
 workflows:
   version: 2
