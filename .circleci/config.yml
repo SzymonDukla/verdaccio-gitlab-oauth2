@@ -33,6 +33,14 @@ jobs:
           at: .
       - run: yarn prepack
 
+  publish:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - attach_workspace:
+          at: .
+      - run: npm publish --access=public
+
 workflows:
   version: 2
   default:
@@ -44,3 +52,9 @@ workflows:
       - prepublish:
           requires:
             - install
+            - lint
+      - publush:
+          requires:
+            - install
+            - lint
+            - prepublish
