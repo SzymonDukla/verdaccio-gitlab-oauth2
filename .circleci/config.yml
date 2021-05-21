@@ -53,7 +53,7 @@ workflows:
           requires:
             - install
             - lint
-      - publush:
+      - publish:
           requires:
             - install
             - lint
