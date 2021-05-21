@@ -1,4 +1,5 @@
 import {
+  AuthAccessCallback,
   AuthCallback,
   IPluginAuth,
   IPluginMiddleware,
@@ -78,6 +79,7 @@ export class GitlabOauthUiPlugin implements IPluginMiddleware<any>, IPluginAuth<
     }
   }
 
+  // @ts-ignore
   allow_access(user: RemoteUser, pkg: PackageAccess, cb: AuthCallback): void {
     const requiredAccess = [...pkg.access || []]
 

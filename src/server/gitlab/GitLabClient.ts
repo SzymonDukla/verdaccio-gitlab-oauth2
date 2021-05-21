@@ -37,7 +37,7 @@ export class GitLabClient {
   /**
    * `POST /oauth/token`
    */
-  requestAccessToken = async (code: string | string[] | QueryString.ParsedQs | QueryString.ParsedQs[], clientId: string, clientSecret: string, redirect_uri: string) => {
+  requestAccessToken = async (code: string | string[], clientId: string, clientSecret: string, redirect_uri: string) => {
     const url = this.webBaseUrl + "/oauth/token"
     const options = {
       body: {
