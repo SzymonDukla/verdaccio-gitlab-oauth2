@@ -1,0 +1,46 @@
+version: 2
+jobs:
+  install:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - yarn-cache-{{ checksum "yarn.lock" }}
+            - yarn-cache-
+      - run: yarn install --frozen-lockfile --no-progress
+      - save_cache:
+          key: yarn-cache-{{ checksum "yarn.lock" }}
+          paths: node_modules
+      - persist_to_workspace:
+          root: .
+          paths: .
+
+  lint:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - attach_workspace:
+          at: .
+      - run: yarn lint
+
+  prepublish:
+    docker:
+      - image: circleci/node:10
+    steps:
+      - attach_workspace:
+          at: .
+      - run: yarn prepack
+
+workflows:
+  version: 2
+  default:
+    jobs:
+      - install
+      - lint:
+          requires:
+            - install
+      - prepublish:
+          requires:
+            - install

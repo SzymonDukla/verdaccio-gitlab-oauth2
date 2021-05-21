@@ -1,0 +1,62 @@
+#
+# Look here for more config file examples:
+# https://github.com/verdaccio/verdaccio/tree/master/conf
+#
+
+# path to a directory with all packages
+storage: ./storage
+
+# path to a directory with plugins to include
+plugins: ./plugins
+
+web:
+  # WebUI is enabled as default, if you want disable it, just uncomment this line
+  title: Verdaccio
+
+# To use `npm audit` uncomment the following section
+middlewares:
+  audit:
+    enabled: true
+  gitlab-oauth2:
+    enabled: true
+
+auth:
+  gitlab-oauth2:
+    group: GITLAB_GROUP # required
+    client-id: GITLAB_CLIENT_ID # required
+    client-secret: GITLAB_CLIENT_SECRET # required
+    gitlab-host: GITLAB_HOST # optional, set this if you are using self hosted gitlab
+
+# a list of other known repositories we can talk to
+uplinks:
+  npmjs:
+    url: https://registry.npmjs.org/
+
+packages:
+  "@*/*":
+    # scoped packages
+    access: $authenticated
+    publish: $authenticated
+    proxy: npmjs
+
+  "**":
+    # allow all users (including non-authenticated users) to read and
+    # publish all packages
+    #
+    # you can specify usernames/groupnames (depending on your auth plugin)
+    # and three keywords: "$all", "$anonymous", "$authenticated"
+    access: $authenticated
+
+    # allow all known users to publish packages
+    # (anyone can register by default, remember?)
+    publish: $authenticated
+
+    # if package is not available locally, proxy requests to 'npmjs' registry
+    proxy: npmjs
+
+# log settings
+logs:
+  - { type: stdout, format: pretty, level: http }
+  #- {type: file, path: verdaccio.log, level: info}
+
+url_prefix: http://localhost:4873

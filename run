@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+set -e
+
+#
+# Helpers
+##################################################
+
+red="\e[31m"
+reset="\e[39m"
+
+run() {
+  task=${1}
+  shift
+  echo -e [${task}] ${@}
+  ${@}
+}
+
+fail() {
+  echo -e ${red}${@}${reset}
+  exit 1
+}
+
+#
+# Commands
+##################################################
+
+linkdir=node_modules/verdaccio-gitlab-oauth2
+config=verdaccio.yaml
+
+#
+# Build server, config and client
+#
+build() {
+  run build node rollup.js
+  run build cp -R src/client/*.css dist/public
+}
+
+#
+# Remove the plugin from node_modules
+#
+clear() {
+  run clear rm -rf dist
+  run clear rm -rf $linkdir
+}
+
+
+#
+# Copy the built plugin to node_modules
+#
+link() {
+  run link mkdir -p $linkdir/
+  run link cp -R dist $linkdir/
+  run link cp package.json $linkdir/
+  run link cp verdaccio.yaml $linkdir/
+}
+
+#
+# Update client and server
+#
+update() {
+  clear
+  build
+  link
+}
+
+#
+# Start verdaccio
+#
+start() {
+  run start yarn verdaccio -c $config ${@}
+}
+
+#
+# Watch for changes, rebuild and update
+#
+watch() {
+  run watch yarn nodemon --watch src --ext ts,css --exec bash run update
+}
+
+#
+# Run linters
+#
+lint() {
+  run lint yarn tsc --project src/client/tsconfig.json --noEmit
+  run lint yarn tsc --project src/server/tsconfig.json --noEmit
+  run lint yarn tslint -c tslint.json -p src/client/tsconfig.json ${@}
+  run lint yarn tslint -c tslint.json -p src/server/tsconfig.json ${@}
+}
+
+#
+# CLI
+##################################################
+
+#
+# Call the function specified by the first parameter, passing all remaining
+# parameters to the function. If no such function exists, display usage info.
+#
+if [ -n "$1" ] && type $1 | grep -i function > /dev/null; then
+  command="$1"
+  shift
+  $command ${@}
+else
+  fail "No such command: $1"
+fi
