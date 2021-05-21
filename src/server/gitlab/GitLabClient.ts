@@ -4,6 +4,7 @@ import { stringify } from "querystring"
 
 import { GitLabOAuth } from "./OAuth"
 import { GitLabUser } from "./User"
+import { ParsedQs } from "qs";
 
 export class GitLabClient {
 
@@ -37,7 +38,7 @@ export class GitLabClient {
   /**
    * `POST /oauth/token`
    */
-  requestAccessToken = async (code: string | string[] | undefined, clientId: string, clientSecret: string, redirect_uri: string) => {
+  requestAccessToken = async (code: string | string[] | ParsedQs | ParsedQs[] | undefined, clientId: string, clientSecret: string, redirect_uri: string) => {
     const url = this.webBaseUrl + "/oauth/token"
     const options = {
       body: {
