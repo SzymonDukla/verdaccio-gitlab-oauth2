@@ -36,6 +36,7 @@ function modifyUsageInfoNodes() {
 function updateUsageInfo() {
   markUsageInfoNodes()
   modifyUsageInfoNodes()
+  console.info("verdaccio-gitlab-oauth2 initated!")
 }
 
 init({
