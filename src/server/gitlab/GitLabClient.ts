@@ -1,10 +1,9 @@
 import got, {GotJSONOptions} from "got"
 import {merge} from "lodash"
-import {stringify} from "querystring"
 
 import {GitLabOAuth} from "./OAuth"
 import {GitLabUser} from "./User"
-import {ParsedQs} from "qs"
+import {ParsedQs, stringify} from "qs"
 
 export class GitLabClient {
 
@@ -43,14 +42,14 @@ export class GitLabClient {
     code: string | string[] | ParsedQs | ParsedQs[] | undefined,
     clientId: string,
     clientSecret: string,
-    redirectUri: string
+    redirectUri: string,
   ) => {
     const url = this.webBaseUrl + "/oauth/token"
     const options = {
       body: {
         client_id: clientId,
         client_secret: clientSecret,
-        code: code,
+        code,
         redirect_uri: redirectUri,
         grant_type: "authorization_code",
       },
