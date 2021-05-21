@@ -3,7 +3,7 @@ import {merge} from "lodash"
 
 import {GitLabOAuth} from "./OAuth"
 import {GitLabUser} from "./User"
-import {ParsedQs, stringify} from "qs"
+import {stringify, ParsedQs} from "qs"
 
 export class GitLabClient {
 
