@@ -71,7 +71,7 @@ export class GitlabOauthUiPlugin implements IPluginMiddleware<any>, IPluginAuth<
   async authenticate(username: string, authToken: string, cb: AuthCallback) {
     const userOrgs = await this.getGroupNames(username, authToken)
 
-    if (this.requiredGroup == "*" || userOrgs.includes(this.requiredGroup)) {
+    if (this.requiredGroup === "*" || userOrgs.includes(this.requiredGroup)) {
       cb(null, [this.requiredGroup])
     } else {
       log(`Unauthenticated: user "${username}" is not a member of "${this.requiredGroup}"`)
@@ -113,7 +113,7 @@ export class GitlabOauthUiPlugin implements IPluginMiddleware<any>, IPluginAuth<
 
     if (!cached().groupNames) {
       try {
-        let user = await this.gitlab.requestUser(authToken)
+        const user = await this.gitlab.requestUser(authToken)
 
         this.cache[username] = {
           authToken,

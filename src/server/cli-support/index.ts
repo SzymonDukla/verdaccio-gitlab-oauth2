@@ -8,7 +8,6 @@ import { Callback } from "../plugin/Callback"
 import { getConfig, PluginConfig } from "../plugin/Config"
 import { Auth } from "../verdaccio"
 
-
 const pluginOAuthId = "/gitlab-oauth-cli"
 
 const cliAuthorizeUrl = "/oauth/authorize"

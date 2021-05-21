@@ -1,10 +1,10 @@
-import got, { GotJSONOptions } from "got"
-import { merge } from "lodash"
-import { stringify } from "querystring"
+import got, {GotJSONOptions} from "got"
+import {merge} from "lodash"
+import {stringify} from "querystring"
 
-import { GitLabOAuth } from "./OAuth"
-import { GitLabUser } from "./User"
-import { ParsedQs } from "qs";
+import {GitLabOAuth} from "./OAuth"
+import {GitLabUser} from "./User"
+import {ParsedQs} from "qs"
 
 export class GitLabClient {
 
@@ -14,7 +14,8 @@ export class GitLabClient {
 
   constructor(
     private readonly gitlabHost?: string,
-  ) { }
+  ) {
+  }
 
   get webBaseUrl(): string {
     return this.gitlabHost || "https://gitlab.com"
@@ -32,21 +33,26 @@ export class GitLabClient {
       scope: "openid",
     }
 
-    return this.webBaseUrl + `/oauth/authorize?` + stringify(query).replace('%20', '+')
+    return this.webBaseUrl + "/oauth/authorize?" + stringify(query).replace("%20", "+")
   }
 
   /**
    * `POST /oauth/token`
    */
-  requestAccessToken = async (code: string | string[] | ParsedQs | ParsedQs[] | undefined, clientId: string, clientSecret: string, redirect_uri: string) => {
+  requestAccessToken = async (
+    code: string | string[] | ParsedQs | ParsedQs[] | undefined,
+    clientId: string,
+    clientSecret: string,
+    redirectUri: string
+  ) => {
     const url = this.webBaseUrl + "/oauth/token"
     const options = {
       body: {
         client_id: clientId,
         client_secret: clientSecret,
         code: code,
-        redirect_uri: redirect_uri,
-        grant_type: "authorization_code"
+        redirect_uri: redirectUri,
+        grant_type: "authorization_code",
       },
     }
     return this.request<GitLabOAuth>(url, options)
