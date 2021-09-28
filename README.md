@@ -44,11 +44,11 @@ Merge the below options with your existing Verdaccio config:
 
 ```yml
 middlewares:
-  gitlab-oauth:
+  gitlab-oauth2:
     enabled: true
 
 auth:
-  gitlab-oauth:
+  gitlab-oauth2:
     group: GITLAB_GROUP_PATH
     client-id: GITLAB_CLIENT_ID
     client-secret: GITLAB_CLIENT_SECRET
